@@ -1,7 +1,6 @@
 import streamlit as st
 import sqlite3
-
-DB_PATH = "/db/{}"
+DB_PATH = "db/{}"
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -9,13 +8,16 @@ def create_connection(db_file):
     :return: Connection object or None
     """
     conn = None
+
     try:
         conn = sqlite3.connect(db_file)
     except Exception as e:
-        st.write(e)
+        print(e)
 
     return conn
 
 
 conn = create_connection(DB_PATH.format("database.sqlite3"))
-conn.execute()
+cur = conn.cursor()
+reports = cur.execute("SELECT report_content FROM report").fetchall()
+print(reports)
